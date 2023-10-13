@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'corsheaders',
     'barberProfile.apps.BarberprofileConfig',
+    'schedule.apps.ScheduleConfig',
 ]
 
 MIDDLEWARE = [
