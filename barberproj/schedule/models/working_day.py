@@ -18,3 +18,7 @@ class WorkingDay(models.Model):
     shift = models.CharField(max_length=10, choices=SHIFT_CHOICES, default=FIRST)
 
     reserved = models.BooleanField(default=False)
+
+
+    def __str__(self) -> str:
+        return f"{self.date} at {self.time_slot}"

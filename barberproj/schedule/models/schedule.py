@@ -14,4 +14,4 @@ class Schedule(models.Model):
     # schedule_time = models.TimeField()
 
     def __str__(self):
-        return f"{self.customer} with {self.barber} at {self.date_time}"
+        return f"{self.customer} kod barbera {self.barber} u: {self.date_time}" 

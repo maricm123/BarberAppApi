@@ -3,9 +3,15 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from django.urls import include, path
+
+from api.views import views_schedule
 app_name = "api"
 
 urlpatterns = [
+    # SCHEDULES
+    path('schedules-by-me/', views_schedule.ScheduleListByBarber.as_view(), name='schedules-by-me'),
+
+    path('day/<str:date>/', views_schedule.WorkingDayByDate.as_view(), name='day'),
     # AUTHENTICATION
     # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
