@@ -22,3 +22,6 @@ class WorkingDay(models.Model):
 
     def __str__(self) -> str:
         return f"{self.date} at {self.time_slot}"
+    
+    class Meta:
+        unique_together = ('date', 'time_slot')

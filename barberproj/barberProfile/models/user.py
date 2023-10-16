@@ -60,6 +60,7 @@ class CustomUserManager(UserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
     name = models.CharField(max_length=255, blank=False, default='sanja')
+    # phone = models.CharField(max_length=100, blank=False)
     # avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_superuser = models.BooleanField(default=True)

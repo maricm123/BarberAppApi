@@ -1,2 +1,42 @@
 mihailomaric001@gmail.com
 mihailo
+
+
+[
+{
+    "date": "2023-10-16",
+    "time_slot": 1,
+    "shift": "first",
+    "reserved": false
+},
+{
+    "date": "2023-10-16",
+    "time_slot": 2,
+    "shift": "first",
+    "reserved": false
+},
+{
+    "date": "2023-10-16",
+    "time_slot": 3,
+    "shift": "first",
+    "reserved": false
+},
+{
+    "date": "2023-10-16",
+    "time_slot": 4,
+    "shift": "first",
+    "reserved": false
+}
+]
+
+
+
+
+
+{
+    "customer": "miki",
+    "telephone": "123456",
+    "email": "mihailomaric001@gmail.com",
+    "barber": 4,
+    "date_time" : 25
+}
