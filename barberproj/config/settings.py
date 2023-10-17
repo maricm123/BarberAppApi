@@ -20,9 +20,8 @@ ALLOWED_HOSTS = []
 SECRET_KEY = os.environ["DJ_SECRET_KEY"]
 
 DEBUG = bool(strtobool(os.environ["DJ_DEBUG"]))
+
 # Application definition
-
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -177,3 +176,15 @@ AUTH_USER_MODEL = "barberProfile.User"
 # settings.py
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+####################################################################################################
+# Mailjet (mailing)
+####################################################################################################
+
+EMAIL_BACKEND = os.environ["DJ_EMAIL_BACKEND"]  # Console for local env, Dummy for staging, etc.
+EMAIL_HOST = os.environ.get("DJ_EMAIL_HOST")
+EMAIL_HOST_USER = os.environ.get("DJ_EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("DJ_EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.environ.get("DJ_EMAIL_PORT")
+EMAIL_USE_TLS = bool(strtobool(os.environ["DJ_EMAIL_USE_TLS"]))

@@ -19,9 +19,12 @@ class WorkingDay(models.Model):
 
     reserved = models.BooleanField(default=False)
 
+    # kome je dodeljen ovaj termin, kom frizeru, tj ko ga je napravio
+    barber = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
-        return f"{self.date} at {self.time_slot}"
-    
+        formatted_date = self.date.strftime('%d-%m-%Y')
+        return f"{formatted_date} u {self.time_slot} kod {self.barber}"
+
     class Meta:
         unique_together = ('date', 'time_slot')

@@ -37,6 +37,5 @@ mihailo
     "customer": "miki",
     "telephone": "123456",
     "email": "mihailomaric001@gmail.com",
-    "barber": 4,
-    "date_time" : 25
+    "date_time" : 30
 }

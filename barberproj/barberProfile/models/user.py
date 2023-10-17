@@ -72,6 +72,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = []
 
+    def __str__(self) -> str:
+        return self.name
+
 
     # def get_avatar(self):
     #     if self.avatar:
