@@ -1,1 +1,1 @@
-web: gunicorn barberProj.config.wsgi
+web: gunicorn barberproj.config.wsgi
