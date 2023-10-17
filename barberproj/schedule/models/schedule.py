@@ -13,13 +13,10 @@ class Schedule(models.Model):
     email = models.CharField(max_length=100)
     barber = models.ForeignKey(User, on_delete=models.CASCADE)
     date_time = models.ForeignKey(WorkingDay, on_delete=models.CASCADE)
-    # schedule_date = models.DateField()
-    # schedule_time = models.TimeField()
 
     def __str__(self):
         return f"{self.customer} kod barbera {self.barber} u: {self.date_time}" 
 
-    
     @classmethod
     @transaction.atomic
     def create(cls, customer, telephone, email, barber, date_time):
@@ -34,11 +31,9 @@ class Schedule(models.Model):
             schedule_obj.save()
 
             time = date_time.time_slot
-            print(time)
             date = date_time.date
             formatted_date = date.strftime('%d-%m-%Y')
-            print(formatted_date)
-            print(date)
+
             # send_mail_for_schedule(email, barber, time, formatted_date)
 
         except Exception as e:

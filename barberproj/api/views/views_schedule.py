@@ -16,14 +16,7 @@ from datetime import date
 from rest_framework import serializers
 
 
-class ScheduleListByBarber(generics.ListAPIView):
-    serializer_class = ScheduleSerializer
-    # permission_classes = [IsAuthenticated]
-
-    def get_queryset(self):
-        # user = self.request.user
-        return Schedule.objects.filter(barber=4)
-
+"""WORKING DAY VIEWS"""
 
 class WorkingDayByDate(generics.ListAPIView):
     serializer_class = WorkingDaySerializer
@@ -54,12 +47,23 @@ class CreateWorkingDay(APIView):
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return Response(created_working_days, status=status.HTTP_201_CREATED)
-    
+
+
+"""SCHEDULE VIEWS"""
+
+
+class ScheduleListByBarber(generics.ListAPIView):
+    serializer_class = ScheduleSerializer
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        # user = self.request.user
+        return Schedule.objects.filter(barber=4)
+
 
 class CreateSchedule(APIView):
     @transaction.atomic
     def post(self, request):
-         print(request.data)
          serializer = ScheduleSerializerCreate(data=request.data)
          serializer.is_valid(raise_exception=True)
          return Response(serializer.data, status=status.HTTP_201_CREATED)

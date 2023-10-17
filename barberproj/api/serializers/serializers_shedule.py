@@ -44,7 +44,6 @@ class WorkingDaySerializerCreate(serializers.ModelSerializer):
         return super().validate(attrs)
 
 
-
 class ScheduleSerializerCreate(serializers.ModelSerializer):
     class Meta:
         model = Schedule
