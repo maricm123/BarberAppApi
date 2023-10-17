@@ -87,18 +87,18 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #     }
 # }
 # Database configuration for local environment (override Heroku conf because of SSL troubles)
-USE_HEROKU_DB_CONF = bool(strtobool(os.environ["DJ_USE_HEROKU_DB_CONF"]))
-if not USE_HEROKU_DB_CONF:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'barber',
-            'USER': 'postgres',
-            'PASSWORD': 'admin',
-            'HOST': '127.0.0.1',
-            'PORT': '5432',
-        }
+# USE_HEROKU_DB_CONF = bool(strtobool(os.environ["DJ_USE_HEROKU_DB_CONF"]))
+# if not USE_HEROKU_DB_CONF:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'barber',
+        'USER': 'postgres',
+        'PASSWORD': 'admin',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
+}
 
 
 # Password validation
