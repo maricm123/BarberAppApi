@@ -1,7 +1,10 @@
 from datetime import timedelta
+from distutils.util import strtobool
 import os
 from pathlib import Path
-
+from dotenv import load_dotenv
+import django_heroku
+import dj_database_url
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -15,10 +18,15 @@ SECRET_KEY = 'django-insecure-9l0u5^@d%+3!ui+*(*l40_^4n^36c7@7t5tt1=a4ksehgl0s#=
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+load_dotenv()  # take environment variables from .env.
+
 ALLOWED_HOSTS = []
 
+SECRET_KEY = os.environ["DJ_SECRET_KEY"]
 
+DEBUG = bool(strtobool(os.environ["DJ_DEBUG"]))
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -30,6 +38,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'django_heroku',
     'barberProfile.apps.BarberprofileConfig',
     'schedule.apps.ScheduleConfig',
 ]
@@ -44,8 +53,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 ROOT_URLCONF = 'config.urls'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
 
 TEMPLATES = [
     {
@@ -75,17 +86,19 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'barber',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+# Database configuration for local environment (override Heroku conf because of SSL troubles)
+USE_HEROKU_DB_CONF = bool(strtobool(os.environ["DJ_USE_HEROKU_DB_CONF"]))
+if not USE_HEROKU_DB_CONF:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': 'barber',
+            'USER': 'postgres',
+            'PASSWORD': 'admin',
+            'HOST': '127.0.0.1',
+            'PORT': '5432',
+        }
     }
-}
 
 
 # Password validation
