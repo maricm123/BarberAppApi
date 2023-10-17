@@ -19,6 +19,8 @@ class WorkingDay(models.Model):
 
     reserved = models.BooleanField(default=False)
 
+    is_vacation = models.BooleanField(default=False)
+
     # kome je dodeljen ovaj termin, kom frizeru, tj ko ga je napravio
     barber = models.ForeignKey(User, blank=False, null=False, on_delete=models.CASCADE)
 
