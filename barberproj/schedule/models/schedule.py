@@ -33,11 +33,12 @@ class Schedule(models.Model):
             )
             schedule_obj.save()
             print(date_time.barber)
+            barber = date_time.barber
             time = date_time.time_slot
             date = date_time.date
             formatted_date = date.strftime('%d-%m-%Y')
 
-            # send_mail_for_schedule(email, barber, time, formatted_date)
+            send_mail_for_schedule(email, barber, time, formatted_date)
 
         except Exception as e:
             print(e)
