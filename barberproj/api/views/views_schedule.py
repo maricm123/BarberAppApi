@@ -9,11 +9,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from schedule.models.working_day import WorkingDay
-from api.serializers.serializers_shedule import ScheduleSerializer, ScheduleSerializerCreate, WorkingDaySerializer, WorkingDaySerializerCreate
+from api.serializers.serializers_shedule import ScheduleSerializer, ScheduleSerializerCreate, SetVacationDaySerializer, WorkingDaySerializer, WorkingDaySerializerCreate
 from barberProfile.admin import User
 from schedule.models.schedule import Schedule
 from datetime import date
 from rest_framework import serializers
+from drf_spectacular.utils import extend_schema
 
 
 """WORKING DAY VIEWS"""
@@ -32,21 +33,57 @@ class WorkingDayByDate(generics.ListAPIView):
 
 class CreateWorkingDay(APIView):
     # permission_classes = (IsAuthenticated, )
+    """
+    [
+        {
+            "date": "2023-10-20",
+            "time_slot": 1,
+            "shift": "first",
+            "reserved": false,
+            "barber": 1
+        }
+    ]
+    """
 
+    @extend_schema(responses=WorkingDaySerializerCreate)
     @transaction.atomic
     def post(self, request):
         data = request.data  # Assuming request.data is a list of objects
-        created_working_days = []
+        created__slots_in_working_days = []
 
         for item in data:
             serializer = WorkingDaySerializerCreate(data=item)
             if serializer.is_valid():
                 serializer.save()
-                created_working_days.append(serializer.data)
+                created__slots_in_working_days.append(serializer.data)
+                print(serializer.data)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(created_working_days, status=status.HTTP_201_CREATED)
+        return Response(created__slots_in_working_days, status=status.HTTP_201_CREATED)
+
+
+class SetVacationWorkingDay(APIView):
+    # permission_classes = (IsAuthenticated, )
+
+    # Ovde kada bude permission class prosledjivacemo usera i nece trebati u serializeru barber polje
+    def post(self, request):
+        data = request.data
+        serializer = SetVacationDaySerializer(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+
+class DeletePastWorkingDays(generics.DestroyAPIView):
+    # permission_classes = (IsAuthenticated, )
+
+    @transaction.atomic
+    def delete(self, request):
+        past_working_days = WorkingDay.objects.filter(date__lt=datetime.today())
+        print(past_working_days)
+        past_working_days.delete()
+        return Response(status=HTTP_204_NO_CONTENT)
 
 
 """SCHEDULE VIEWS"""
@@ -83,3 +120,5 @@ class DeleteSchedule(generics.DestroyAPIView):
             return Response(status=HTTP_204_NO_CONTENT)
         except Exception as e:
             print(e)
+
+

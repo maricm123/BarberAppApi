@@ -42,6 +42,19 @@ class WorkingDaySerializerCreate(serializers.ModelSerializer):
 
     def validate(self, attrs):
         return super().validate(attrs)
+    
+
+class SetVacationDaySerializer(serializers.Serializer):
+    date = serializers.DateField()
+    barber = serializers.IntegerField()
+
+    def validate(self, data):
+        existing_working_day = WorkingDay.objects.filter(date=data["date"], barber=data["barber"])
+        if existing_working_day:
+            raise serializers.ValidationError("Vec ima zakazan slobodan dan za ovog frizera")
+        barber = User.objects.get(id=data["barber"])
+        WorkingDay.set_vacation(data["date"], barber)
+        return data
 
 
 class ScheduleSerializerCreate(serializers.ModelSerializer):

@@ -39,3 +39,34 @@ mihailo
     "email": "mihailomaric001@gmail.com",
     "date_time" : 30
 }
+
+
+
+
+[
+{
+    "date": "2023-10-20",
+    "time_slot": 1,
+    "shift": "first",
+    "reserved": false,
+    "barber": 1
+}
+]
+
+[
+{
+    "date": "2023-10-20",
+    "time_slot": 1,
+    "shift": "first",
+    "reserved": false,
+    "barber": 4,
+    "is_vacation": true
+}
+]
+
+
+
+{
+    "date": "2023-10-20",
+    "barber": 4
+}
