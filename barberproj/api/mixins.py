@@ -1,4 +1,8 @@
 from django.core.mail import send_mail
+from django.urls.exceptions import NoReverseMatch
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.reverse import reverse
 
 
 def send_mail_for_schedule(email, barber, time, date):
@@ -10,13 +14,6 @@ def send_mail_for_schedule(email, barber, time, date):
         send_mail(subject, message, from_email, recipient_list)
     except Exception as e:
         print(e)
-
-
-from django.urls.exceptions import NoReverseMatch
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework.reverse import reverse
-
 
 
 class APIRootViewMixin(APIView):
@@ -33,12 +30,9 @@ class APIRootViewMixin(APIView):
     def get(self, request):
         self._check_url_namespace()
         list_endpoints = self.get_endpoints()
-        print(list_endpoints)
 
         dict_endpoints = dict(url_without_parameters=dict(), url_with_parameters=dict())
-        print(dict_endpoints, "DICT ENPOINTS")
         for endpoint_path in list_endpoints:
-            print(endpoint_path)
             name = endpoint_path.name
             try:
                 uri = request.build_absolute_uri(reverse(f"{self.url_namespace}:{name}"))

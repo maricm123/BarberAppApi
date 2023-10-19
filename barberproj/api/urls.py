@@ -6,7 +6,9 @@ from django.urls import include, path
 from api.views import views_schedule, views_barber, views_browsable
 from django.conf import settings
 
+
 app_name = "core"
+
 
 endpoints_urlpatterns = [
     # SCHEDULES
@@ -28,13 +30,11 @@ endpoints_urlpatterns = [
 ]
 
 
-# VERSION = 1
-# PathPrefix = f"{VERSION}/"
-
 urlpatterns = [path("", include(endpoints_urlpatterns))]
+
 
 if settings.DEBUG:
     endpoints_urlpatterns_debug = [
-        path(route="", view=views_browsable.ApiAPIRootView.as_view(), name="root"),
+        path(route="", view=views_browsable.APIRootView.as_view(), name="root"),
     ]
     urlpatterns += [path("", include(endpoints_urlpatterns_debug))]

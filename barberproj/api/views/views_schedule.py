@@ -89,7 +89,7 @@ class ScheduleListByBarber(generics.ListAPIView):
 
     def get_queryset(self):
         # user = self.request.user
-        return Schedule.objects.filter(barber=4)
+        return Schedule.objects.filter(date_time__barber=4)
 
 
 class CreateSchedule(APIView):
