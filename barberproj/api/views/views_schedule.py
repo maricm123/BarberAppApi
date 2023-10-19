@@ -20,6 +20,12 @@ from drf_spectacular.utils import extend_schema
 """WORKING DAY VIEWS"""
 
 class WorkingDayByDate(generics.ListAPIView):
+    """
+    This endpoint retrieves a list of time .
+
+    - Request method: GET
+    - URL: /api/day/YYYY-MM-DD
+    """
     serializer_class = WorkingDaySerializer
 
     def get_queryset(self):
@@ -33,19 +39,7 @@ class WorkingDayByDate(generics.ListAPIView):
 
 class CreateWorkingDay(APIView):
     # permission_classes = (IsAuthenticated, )
-    """
-    [
-        {
-            "date": "2023-10-20",
-            "time_slot": 1,
-            "shift": "first",
-            "reserved": false,
-            "barber": 1
-        }
-    ]
-    """
 
-    @extend_schema(responses=WorkingDaySerializerCreate)
     @transaction.atomic
     def post(self, request):
         data = request.data  # Assuming request.data is a list of objects

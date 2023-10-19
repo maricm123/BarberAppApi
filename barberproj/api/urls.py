@@ -3,10 +3,12 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 from django.urls import include, path
-from api.views import views_schedule, views_barber
-app_name = "api"
+from api.views import views_schedule, views_barber, views_browsable
+from django.conf import settings
 
-urlpatterns = [
+app_name = "core"
+
+endpoints_urlpatterns = [
     # SCHEDULES
     path('schedules-by-me/', views_schedule.ScheduleListByBarber.as_view(), name='schedules-by-me'),
     path('create-schedule/', views_schedule.CreateSchedule.as_view(), name='create-schedule'),
@@ -24,3 +26,15 @@ urlpatterns = [
     path('current-user/', views_barber.CurrentUserView.as_view(),
              name='current-user'),
 ]
+
+
+# VERSION = 1
+# PathPrefix = f"{VERSION}/"
+
+urlpatterns = [path("", include(endpoints_urlpatterns))]
+
+if settings.DEBUG:
+    endpoints_urlpatterns_debug = [
+        path(route="", view=views_browsable.ApiAPIRootView.as_view(), name="root"),
+    ]
+    urlpatterns += [path("", include(endpoints_urlpatterns_debug))]
