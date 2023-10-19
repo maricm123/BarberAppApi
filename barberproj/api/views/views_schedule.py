@@ -3,8 +3,7 @@ from django.conf import settings
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
@@ -14,8 +13,6 @@ from barberProfile.admin import User
 from schedule.models.schedule import Schedule
 from datetime import date
 from rest_framework import serializers
-from drf_spectacular.utils import extend_schema
-
 
 """WORKING DAY VIEWS"""
 
