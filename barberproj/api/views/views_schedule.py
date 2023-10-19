@@ -114,5 +114,3 @@ class DeleteSchedule(generics.DestroyAPIView):
             return Response(status=HTTP_204_NO_CONTENT)
         except Exception as e:
             print(e)
-
-

@@ -1,4 +1,6 @@
 from datetime import date
+import re
+from django.db import transaction
 from rest_framework import serializers
 from schedule.models.time_slot import TimeSlot
 from schedule.models.working_day import WorkingDay
@@ -62,25 +64,31 @@ class ScheduleSerializerCreate(serializers.ModelSerializer):
         model = Schedule
         fields = "__all__"
 
-    # def validate_barber(self, value):
-    #     print(value.id)
-    #     try:
-    #         barber = User.objects.get(id=value)
-    #     except User.DoesNotExist:
-    #         raise serializers.ValidationError("Slot does not exist")
-            
-    # def validate_date_time(self, value):
-    #     print(value.id)
-    #     try:
-    #         date_time = WorkingDay.objects.get(id=value)
-    #     except WorkingDay.DoesNotExist:
-    #         raise serializers.ValidationError("Slot does not exist")
-    #     return value.id
+    def validate_date_time(self, value):
+        if value.reserved:
+            raise serializers.ValidationError("Ovaj termin je vec zakazan")
+        if value.is_vacation:
+            raise serializers.ValidationError("Danas je slobodan dan, ne mozete rezervisati termin")
+        return value
+
+    def validate_email(self, value):
+        if not re.match(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b', value):
+            raise serializers.ValidationError("Pogresan format emaila.")
+        return value
+
+    def validate_telephone(self, value):
+        if not re.match(r'^[0-9]{7,}$', value):
+            raise serializers.ValidationError("Pogresan format telefonskog broja")
+        return value
 
     def validate(self, data):
-        Schedule.create(**data)
         working_day = data["date_time"]
-        working_day.reserved = True
-        working_day.save(update_fields=['reserved'])
+        try:
+            with transaction.atomic():
+                working_day.reserved = True
+                working_day.save(update_fields=['reserved'])
+                Schedule.create(**data)
+        except Exception as e:
+            raise serializers.ValidationError("Greska prilikom kreiranja rezervacije.")
         return data
 
