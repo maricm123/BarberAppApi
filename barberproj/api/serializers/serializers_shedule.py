@@ -16,7 +16,7 @@ class TimeSlotSerializer(serializers.ModelSerializer):
 class GetTimeSlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeSlot
-        fields = ["start",]
+        fields = ["id", "start",]
 
 
 class WorkingDaySerializer(serializers.ModelSerializer):
