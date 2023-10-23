@@ -11,7 +11,12 @@ User = get_user_model()
 class TimeSlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeSlot
-        fields = "__all__"
+        fields = "_all__"
+
+class GetTimeSlotSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TimeSlot
+        fields = ["start",]
 
 
 class WorkingDaySerializer(serializers.ModelSerializer):

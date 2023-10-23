@@ -20,6 +20,7 @@ endpoints_urlpatterns = [
     path('create-day/', views_schedule.CreateWorkingDay.as_view(), name='create-day'),
     path('delete-past-working-days/', views_schedule.DeletePastWorkingDays.as_view(), name='delete-past-working-days'),
     path('set-vacation/', views_schedule.SetVacationWorkingDay.as_view(), name='set-vacation'),
+    path('get-time-slots/', views_schedule.GetAllTimeSlots.as_view(), name='get-time-slots'),
     # AUTHENTICATION
     # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

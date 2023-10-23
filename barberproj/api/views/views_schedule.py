@@ -7,8 +7,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from schedule.models.time_slot import TimeSlot
 from schedule.models.working_day import WorkingDay
-from api.serializers.serializers_shedule import ScheduleSerializer, ScheduleSerializerCreate, SetVacationDaySerializer, WorkingDaySerializer, WorkingDaySerializerCreate
+from api.serializers.serializers_shedule import GetTimeSlotSerializer, ScheduleSerializer, ScheduleSerializerCreate, SetVacationDaySerializer, TimeSlotSerializer, WorkingDaySerializer, WorkingDaySerializerCreate
 from barberProfile.admin import User
 from schedule.models.schedule import Schedule
 from datetime import date
@@ -111,3 +112,13 @@ class DeleteSchedule(generics.DestroyAPIView):
             return Response(status=HTTP_204_NO_CONTENT)
         except Exception as e:
             print(e)
+
+
+class GetAllTimeSlots(generics.ListAPIView):
+    """
+    This endpoint retrieves a list of time slots.
+    """
+    serializer_class = GetTimeSlotSerializer
+
+    def get_queryset(self):
+        return TimeSlot.objects.all()
