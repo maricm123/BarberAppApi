@@ -11,7 +11,7 @@ User = get_user_model()
 class TimeSlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeSlot
-        fields = "_all__"
+        fields = "__all__"
 
 class GetTimeSlotSerializer(serializers.ModelSerializer):
     class Meta:
