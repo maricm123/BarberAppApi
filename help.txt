@@ -1,6 +1,9 @@
 mihailomaric001@gmail.com
 mihailo
 
+Proveravanje gresaka na heroku:
+heroku logs --tail --app barber-app-api
+
 
 [
 {
@@ -40,6 +43,12 @@ mihailo
     "date_time" : 30
 }
 
+{
+    "customer": "Mihailo Maric",
+    "telephone": "0650839523",
+    "email": "mihailomaric001@gmail.com",
+    "date_time" : 10
+}
 
 
 
