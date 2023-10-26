@@ -25,9 +25,10 @@ endpoints_urlpatterns = [
     # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('barber-login/', views_barber.UserLoginView.as_view(), name='user-login'),
-    path('barber-register/', views_barber.UserRegisterView.as_view(), name='coach-register'),
+    path('barber-register/', views_barber.UserRegisterView.as_view(), name='barber-register'),
     path('current-user/', views_barber.CurrentUserView.as_view(),
              name='current-user'),
+    path('get-barbers/', views_barber.GetAllBarbers.as_view(), name='get-barbers'),
 ]
 
 

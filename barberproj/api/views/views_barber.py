@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.conf import settings
-from api.serializers.serializers_barber import CustomTokenObtainPairSerializer, UserSerializer
+from api.serializers.serializers_barber import CustomTokenObtainPairSerializer, GetUserSerializer, UserSerializer
 User = get_user_model()
 
 
@@ -43,3 +43,10 @@ class CurrentUserView(generics.RetrieveAPIView):
 
     def get_object(self):
         return self.request.user
+    
+
+class GetAllBarbers(generics.ListAPIView):
+    serializer_class = GetUserSerializer
+    
+    def get_queryset(self):
+        return User.objects.get_barbers()
