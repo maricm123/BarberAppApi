@@ -8,15 +8,6 @@ class WorkingDay(models.Model):
     date = models.DateField()
     time_slot = models.ForeignKey(TimeSlot, on_delete=models.CASCADE, null=True, blank=True)
 
-    FIRST = 'first'
-    SECOND = 'second'
-
-    SHIFT_CHOICES = [
-        (FIRST, 'First'),
-        (SECOND, 'Second'),
-    ]
-    shift = models.CharField(max_length=10, choices=SHIFT_CHOICES, default=FIRST)
-
     reserved = models.BooleanField(default=False)
 
     is_vacation = models.BooleanField(default=False, null=True, blank=True)
