@@ -21,7 +21,6 @@ class Schedule(models.Model):
         return f"{self.customer} u: {self.date_time}" 
 
     @classmethod
-    @transaction.atomic
     def create(cls, customer, telephone, email, date_time):
         try:
             schedule_obj = cls(
