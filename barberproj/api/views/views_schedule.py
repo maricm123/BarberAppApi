@@ -86,8 +86,12 @@ class ScheduleListByBarber(generics.ListAPIView):
     # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # user = self.request.user
-        return Schedule.objects.filter(date_time__barber=2)
+        date_param = self.kwargs.get("date")
+        if date_param: 
+            date_param = date.fromisoformat(date_param)
+            if date_param < date.today():
+                raise serializers.ValidationError("Date must be equal to or greater than today's date.")
+            return Schedule.objects.filter(date_time__barber=2, date_time__date=date_param)
 
 
 class CreateSchedule(APIView):

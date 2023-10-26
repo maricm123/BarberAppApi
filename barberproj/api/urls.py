@@ -12,7 +12,7 @@ app_name = "core"
 
 endpoints_urlpatterns = [
     # SCHEDULES
-    path('schedules-by-me/', views_schedule.ScheduleListByBarber.as_view(), name='schedules-by-me'),
+    path('schedules-by-me/<str:date>/', views_schedule.ScheduleListByBarber.as_view(), name='schedules-by-me'),
     path('create-schedule/', views_schedule.CreateSchedule.as_view(), name='create-schedule'),
     path('delete-schedule/<int:pk>/', views_schedule.DeleteSchedule.as_view(), name='delete-schedule'),
     # WORKING DAY
