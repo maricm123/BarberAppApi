@@ -35,26 +35,54 @@ class WorkingDayByDate(generics.ListAPIView):
             return WorkingDay.objects.filter(date=date_param)
 
 
+# class CreateWorkingDay(APIView):
+#     permission_classes = (IsAuthenticated, )
+
+#     @transaction.atomic
+#     def post(self, request):
+#         user = request.user
+#         data = request.data  # Convert request.data to a dictionary
+#         for entry in data:
+#             entry["barber"] = user.id
+#         created__slots_in_working_days = []
+
+#         for item in data:
+#             serializer = WorkingDaySerializerCreate(data=item)
+#             if serializer.is_valid():
+#                 serializer.save()
+#                 created__slots_in_working_days.append(serializer.data)
+#             else:
+#                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#         return Response(created__slots_in_working_days, status=status.HTTP_201_CREATED)
+
 class CreateWorkingDay(APIView):
     permission_classes = (IsAuthenticated, )
 
     @transaction.atomic
     def post(self, request):
         user = request.user
-        data = request.data  # Convert request.data to a dictionary
+        data = request.data  # Convert request.data to a list
         for entry in data:
             entry["barber"] = user.id
-        created__slots_in_working_days = []
 
-        for item in data:
-            serializer = WorkingDaySerializerCreate(data=item)
-            if serializer.is_valid():
+        # Create a list of WorkingDaySerializerCreate instances
+        serializers = [WorkingDaySerializerCreate(data=item) for item in data]
+
+        # Check if all serializers are valid
+        is_valid = all(serializer.is_valid() for serializer in serializers)
+        print(is_valid)
+
+        if is_valid:
+            created_slots_in_working_days = []
+            for serializer in serializers:
                 serializer.save()
-                created__slots_in_working_days.append(serializer.data)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(created__slots_in_working_days, status=status.HTTP_201_CREATED)
+                created_slots_in_working_days.append(serializer.data)
+            return Response(created_slots_in_working_days, status=status.HTTP_201_CREATED)
+        else:
+            # If any serializer is invalid, return the errors
+            errors = [serializer.errors for serializer in serializers if not serializer.is_valid()]
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SetVacationWorkingDay(APIView):

@@ -34,7 +34,10 @@ class ScheduleSerializer(serializers.ModelSerializer):
         model = Schedule
         fields = "__all__"
 
+from datetime import datetime, time
 
+
+# U ovaj serializer ulazi za svaki objekat po jednom, tako da ne treba da koristim for loop.
 class WorkingDaySerializerCreate(serializers.ModelSerializer):
     class Meta: 
         model = WorkingDay
@@ -44,11 +47,24 @@ class WorkingDaySerializerCreate(serializers.ModelSerializer):
          if value < date.today():
              raise serializers.ValidationError("Datum mora biti danasnji ili unapred")
          return value
-    
-    # validirati time_slot da ne moze da se unese vreme ako je proslo
 
-    def validate(self, attrs):
-        return super().validate(attrs)
+    # ovde validiramo : prvo gledamo ako je danasnji datum onda gledamo time_slotove koje smo ubacili 
+    # ako datum nije danasnji onda mora biti neki unapred, sto znaci da time_slot moze biti koji god!
+    def validate(self, data):
+        # trenutno vreme (ne datum samo vreme)
+        current_time = datetime.now().time()
+        time_slot = data["time_slot"]
+
+        # konvertovan string time slot u pravo vreme
+        time_slot_real_time = time.fromisoformat(time_slot.start)
+
+        # vracamo gresku samo ako je datum danasnji
+        if datetime.today().date() == data["date"]:
+            # i ako je sadasnje vreme vece od time_slot vremena koje frizer ubacuje
+            if current_time > time_slot_real_time:
+                raise serializers.ValidationError("Termin koji ubacujes je prosao za danasnji dan.")
+
+        return data
     
 
 class SetVacationDaySerializer(serializers.Serializer):
