@@ -78,3 +78,22 @@ za updejt baze na heroku-u:
     "date": "2023-10-20",
     "barber": 4
 }
+
+
+
+
+
+[
+{
+    "date": "2023-10-30",
+    "time_slot": 1
+},
+{
+    "date": "2023-10-30",
+    "time_slot": 2
+},
+{
+    "date": "2023-10-30",
+    "time_slot": 3
+}
+]

@@ -22,7 +22,7 @@ class WorkingDay(models.Model):
         return f"{formatted_date} u {self.time_slot} kod {self.barber}"
 
     class Meta:
-        unique_together = ('date', 'time_slot')
+        unique_together = ('date', 'time_slot', 'barber',)
 
     
     @classmethod

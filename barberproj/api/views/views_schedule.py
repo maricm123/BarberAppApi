@@ -36,11 +36,14 @@ class WorkingDayByDate(generics.ListAPIView):
 
 
 class CreateWorkingDay(APIView):
-    # permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
     @transaction.atomic
     def post(self, request):
-        data = request.data  # Assuming request.data is a list of objects
+        user = request.user
+        data = request.data  # Convert request.data to a dictionary
+        for entry in data:
+            entry["barber"] = user.id
         created__slots_in_working_days = []
 
         for item in data:
@@ -48,7 +51,6 @@ class CreateWorkingDay(APIView):
             if serializer.is_valid():
                 serializer.save()
                 created__slots_in_working_days.append(serializer.data)
-                print(serializer.data)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
