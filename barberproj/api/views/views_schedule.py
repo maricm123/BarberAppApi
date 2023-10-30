@@ -68,7 +68,7 @@ class SetVacationWorkingDay(APIView):
     
 
 class DeletePastWorkingDays(generics.DestroyAPIView):
-    # permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
     @transaction.atomic
     def delete(self, request):
@@ -83,15 +83,16 @@ class DeletePastWorkingDays(generics.DestroyAPIView):
 
 class ScheduleListByBarber(generics.ListAPIView):
     serializer_class = ScheduleSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        user = self.request.user
         date_param = self.kwargs.get("date")
         if date_param: 
             date_param = date.fromisoformat(date_param)
             if date_param < date.today():
                 raise serializers.ValidationError("Date must be equal to or greater than today's date.")
-            return Schedule.objects.filter(date_time__barber=2, date_time__date=date_param)
+            return Schedule.objects.filter(date_time__barber=user, date_time__date=date_param)
 
 
 class CreateSchedule(APIView):
