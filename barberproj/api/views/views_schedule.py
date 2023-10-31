@@ -82,6 +82,19 @@ class DeletePastWorkingDays(generics.DestroyAPIView):
         past_working_days = WorkingDay.objects.filter(date__lt=datetime.today())
         past_working_days.delete()
         return Response(status=HTTP_204_NO_CONTENT)
+    
+
+class DeleteWorkingDayTimeSlot(generics.DestroyAPIView):
+    permission_classes = (IsAuthenticated, )
+
+    @transaction.atomic
+    def delete(self, request, pk):
+        working_day_time_slot = WorkingDay.objects.get(id=pk)
+        try:
+            working_day_time_slot.delete()
+            return Response(status=HTTP_204_NO_CONTENT)
+        except Exception as e:
+            print(e)
 
 
 """SCHEDULE VIEWS"""
@@ -133,3 +146,5 @@ class GetAllTimeSlots(generics.ListAPIView):
 
     def get_queryset(self):
         return TimeSlot.objects.all()
+    
+
