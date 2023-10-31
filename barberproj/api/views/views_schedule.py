@@ -17,6 +17,7 @@ from rest_framework import serializers
 
 """WORKING DAY VIEWS"""
 
+
 class WorkingDayByDate(generics.ListAPIView):
     """
     This endpoint retrieves a list of time .
@@ -36,44 +37,49 @@ class WorkingDayByDate(generics.ListAPIView):
 
 
 class CreateWorkingDay(APIView):
-    # permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
     @transaction.atomic
     def post(self, request):
-        data = request.data  # Assuming request.data is a list of objects
-        created__slots_in_working_days = []
+        user = request.user
+        data = request.data  # Convert request.data to a list
+        for entry in data:
+            entry["barber"] = user.id
 
-        for item in data:
-            serializer = WorkingDaySerializerCreate(data=item)
-            if serializer.is_valid():
+        # Create a list of WorkingDaySerializerCreate instances
+        serializers = [WorkingDaySerializerCreate(data=item) for item in data]
+
+        # Check if all serializers are valid
+        is_valid = all(serializer.is_valid() for serializer in serializers)
+
+        if is_valid:
+            created_slots_in_working_days = []
+            for serializer in serializers:
                 serializer.save()
-                created__slots_in_working_days.append(serializer.data)
-                print(serializer.data)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        return Response(created__slots_in_working_days, status=status.HTTP_201_CREATED)
+                created_slots_in_working_days.append(serializer.data)
+            return Response(created_slots_in_working_days, status=status.HTTP_201_CREATED)
+        else:
+            # If any serializer is invalid, return the errors
+            errors = [serializer.errors for serializer in serializers if not serializer.is_valid()]
+            return Response(errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class SetVacationWorkingDay(APIView):
-    # permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
-    # Ovde kada bude permission class prosledjivacemo usera i nece trebati u serializeru barber polje
     def post(self, request):
-        data = request.data
-        serializer = SetVacationDaySerializer(data=data)
+        serializer = SetVacationDaySerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     
 
 class DeletePastWorkingDays(generics.DestroyAPIView):
-    # permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
     @transaction.atomic
     def delete(self, request):
         past_working_days = WorkingDay.objects.filter(date__lt=datetime.today())
-        print(past_working_days)
         past_working_days.delete()
         return Response(status=HTTP_204_NO_CONTENT)
 
@@ -83,11 +89,16 @@ class DeletePastWorkingDays(generics.DestroyAPIView):
 
 class ScheduleListByBarber(generics.ListAPIView):
     serializer_class = ScheduleSerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        # user = self.request.user
-        return Schedule.objects.filter(date_time__barber=4)
+        user = self.request.user
+        date_param = self.kwargs.get("date")
+        if date_param: 
+            date_param = date.fromisoformat(date_param)
+            if date_param < date.today():
+                raise serializers.ValidationError("Date must be equal to or greater than today's date.")
+            return Schedule.objects.filter(date_time__barber=user, date_time__date=date_param)
 
 
 class CreateSchedule(APIView):

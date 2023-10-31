@@ -6,7 +6,7 @@ from .models.time_slot import TimeSlot
 
 
 class WorkingDayAdmin(admin.ModelAdmin):
-    list_display = ('date', 'time_slot', 'shift', 'reserved')
+    list_display = ('date', 'time_slot', 'reserved')
     ordering = ('date',)  # This specifies the default ordering by date in ascending order
 
 admin.site.register(Schedule)

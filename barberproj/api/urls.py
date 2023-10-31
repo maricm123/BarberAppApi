@@ -12,7 +12,7 @@ app_name = "core"
 
 endpoints_urlpatterns = [
     # SCHEDULES
-    path('schedules-by-me/', views_schedule.ScheduleListByBarber.as_view(), name='schedules-by-me'),
+    path('schedules-by-me/<str:date>/', views_schedule.ScheduleListByBarber.as_view(), name='schedules-by-me'),
     path('create-schedule/', views_schedule.CreateSchedule.as_view(), name='create-schedule'),
     path('delete-schedule/<int:pk>/', views_schedule.DeleteSchedule.as_view(), name='delete-schedule'),
     # WORKING DAY
@@ -25,9 +25,10 @@ endpoints_urlpatterns = [
     # path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     # path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('barber-login/', views_barber.UserLoginView.as_view(), name='user-login'),
-    path('barber-register/', views_barber.UserRegisterView.as_view(), name='coach-register'),
+    path('barber-register/', views_barber.UserRegisterView.as_view(), name='barber-register'),
     path('current-user/', views_barber.CurrentUserView.as_view(),
              name='current-user'),
+    path('get-barbers/', views_barber.GetAllBarbers.as_view(), name='get-barbers'),
 ]
 
 

@@ -4,30 +4,31 @@ mihailo
 Proveravanje gresaka na heroku:
 heroku logs --tail --app barber-app-api
 
+za updejt baze na heroku-u:
+    - setujem HEROKU_DB_CONF = True u .env fajlu
+    - tad je baza u produkciji pogodjena
+    - tada idem samo migrate ili opciju koju zelim
+
 
 [
 {
     "date": "2023-10-16",
     "time_slot": 1,
-    "shift": "first",
     "reserved": false
 },
 {
     "date": "2023-10-16",
     "time_slot": 2,
-    "shift": "first",
     "reserved": false
 },
 {
     "date": "2023-10-16",
     "time_slot": 3,
-    "shift": "first",
     "reserved": false
 },
 {
     "date": "2023-10-16",
     "time_slot": 4,
-    "shift": "first",
     "reserved": false
 }
 ]
@@ -56,7 +57,6 @@ heroku logs --tail --app barber-app-api
 {
     "date": "2023-10-20",
     "time_slot": 1,
-    "shift": "first",
     "reserved": false,
     "barber": 1
 }
@@ -66,7 +66,6 @@ heroku logs --tail --app barber-app-api
 {
     "date": "2023-10-20",
     "time_slot": 1,
-    "shift": "first",
     "reserved": false,
     "barber": 4,
     "is_vacation": true
@@ -76,6 +75,43 @@ heroku logs --tail --app barber-app-api
 
 
 {
-    "date": "2023-10-20",
-    "barber": 4
+    "date": "2023-10-20"
 }
+
+
+
+
+
+[
+{
+    "date": "2023-10-30",
+    "time_slot": 1
+},
+{
+    "date": "2023-10-30",
+    "time_slot": 2
+},
+{
+    "date": "2023-10-30",
+    "time_slot": 3
+}
+]
+
+
+[
+{
+    "date": "2023-10-30",
+    "time_slot": 1,
+    "barber": 6
+},
+{
+    "date": "2023-10-30",
+    "time_slot": 2,
+    "barber": 6
+},
+{
+    "date": "2023-10-30",
+    "time_slot": 3,
+    "barber": 6
+}
+]
