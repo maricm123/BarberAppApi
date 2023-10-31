@@ -51,7 +51,6 @@ class CreateWorkingDay(APIView):
 
         # Check if all serializers are valid
         is_valid = all(serializer.is_valid() for serializer in serializers)
-        print(is_valid)
 
         if is_valid:
             created_slots_in_working_days = []
@@ -66,12 +65,10 @@ class CreateWorkingDay(APIView):
 
 
 class SetVacationWorkingDay(APIView):
-    # permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated, )
 
-    # Ovde kada bude permission class prosledjivacemo usera i nece trebati u serializeru barber polje
     def post(self, request):
-        data = request.data
-        serializer = SetVacationDaySerializer(data=data)
+        serializer = SetVacationDaySerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -83,7 +80,6 @@ class DeletePastWorkingDays(generics.DestroyAPIView):
     @transaction.atomic
     def delete(self, request):
         past_working_days = WorkingDay.objects.filter(date__lt=datetime.today())
-        print(past_working_days)
         past_working_days.delete()
         return Response(status=HTTP_204_NO_CONTENT)
 

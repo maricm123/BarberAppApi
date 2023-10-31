@@ -2,6 +2,7 @@ from datetime import date
 import re
 from django.db import transaction
 from rest_framework import serializers
+from api.mixins import ReqContextMixin
 from schedule.models.time_slot import TimeSlot
 from schedule.models.working_day import WorkingDay
 from schedule.models.schedule import Schedule
@@ -68,16 +69,20 @@ class WorkingDaySerializerCreate(serializers.ModelSerializer):
         return data
     
 
-class SetVacationDaySerializer(serializers.Serializer):
+class SetVacationDaySerializer(ReqContextMixin, serializers.Serializer):
     date = serializers.DateField()
-    barber = serializers.IntegerField()
+
+    def validate_date(self, value):
+         if value < date.today():
+             raise serializers.ValidationError("Datum mora biti danasnji ili unapred")
+         return value
 
     def validate(self, data):
-        existing_working_day = WorkingDay.objects.filter(date=data["date"], barber=data["barber"])
+        existing_working_day = WorkingDay.objects.filter(date=data["date"], barber=self._req_context.user)
         if existing_working_day:
-            raise serializers.ValidationError("Vec ima zakazan slobodan dan za ovog frizera")
-        barber = User.objects.get(id=data["barber"])
-        WorkingDay.set_vacation(data["date"], barber)
+            raise serializers.ValidationError("Vec ima zakazanih termina za ovog frizera za ovaj datum")
+        # barber = User.objects.get(id=data["barber"])
+        WorkingDay.set_vacation(data["date"], self._req_context.user)
         return data
 
 
