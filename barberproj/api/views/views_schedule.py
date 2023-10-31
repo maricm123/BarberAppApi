@@ -17,6 +17,7 @@ from rest_framework import serializers
 
 """WORKING DAY VIEWS"""
 
+
 class WorkingDayByDate(generics.ListAPIView):
     """
     This endpoint retrieves a list of time .
@@ -34,27 +35,6 @@ class WorkingDayByDate(generics.ListAPIView):
                 raise serializers.ValidationError("Date must be equal to or greater than today's date.")
             return WorkingDay.objects.filter(date=date_param)
 
-
-# class CreateWorkingDay(APIView):
-#     permission_classes = (IsAuthenticated, )
-
-#     @transaction.atomic
-#     def post(self, request):
-#         user = request.user
-#         data = request.data  # Convert request.data to a dictionary
-#         for entry in data:
-#             entry["barber"] = user.id
-#         created__slots_in_working_days = []
-
-#         for item in data:
-#             serializer = WorkingDaySerializerCreate(data=item)
-#             if serializer.is_valid():
-#                 serializer.save()
-#                 created__slots_in_working_days.append(serializer.data)
-#             else:
-#                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-#         return Response(created__slots_in_working_days, status=status.HTTP_201_CREATED)
 
 class CreateWorkingDay(APIView):
     permission_classes = (IsAuthenticated, )

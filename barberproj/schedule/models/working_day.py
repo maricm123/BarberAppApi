@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from .time_slot import TimeSlot
-from django.core.exceptions import ValidationError
+
 User = get_user_model()
+
 
 class WorkingDay(models.Model):
     date = models.DateField()

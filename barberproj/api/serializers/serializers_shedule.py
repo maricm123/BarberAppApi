@@ -6,12 +6,15 @@ from schedule.models.time_slot import TimeSlot
 from schedule.models.working_day import WorkingDay
 from schedule.models.schedule import Schedule
 from django.contrib.auth import get_user_model
+from datetime import datetime, time
+
 User = get_user_model()
 
 class TimeSlotSerializer(serializers.ModelSerializer):
     class Meta:
         model = TimeSlot
         fields = "__all__"
+
 
 class GetTimeSlotSerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,8 +36,6 @@ class ScheduleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Schedule
         fields = "__all__"
-
-from datetime import datetime, time
 
 
 # U ovaj serializer ulazi za svaki objekat po jednom, tako da ne treba da koristim for loop.
@@ -112,4 +113,3 @@ class ScheduleSerializerCreate(serializers.ModelSerializer):
         except Exception as e:
             raise serializers.ValidationError("Greska prilikom kreiranja rezervacije.")
         return data
-

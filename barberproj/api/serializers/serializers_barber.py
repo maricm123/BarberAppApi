@@ -3,9 +3,7 @@ from django.db import transaction
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-
 User = get_user_model()
-
 
 
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -37,6 +35,7 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         return user
     
+
 class GetUserSerializer(serializers.ModelSerializer):
     """
     Serializer for the base User model.
