@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'django_heroku',
     'barberProfile.apps.BarberprofileConfig',
     'schedule.apps.ScheduleConfig',
+    'django_celery_results',
 ]
 
 MIDDLEWARE = [
@@ -86,10 +87,10 @@ if not USE_HEROKU_DB_CONF:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'barber',
+            'NAME': 'barbercelery',
             'USER': 'postgres',
             'PASSWORD': 'admin',
-            'HOST': '127.0.0.1',
+            'HOST': '127.0.0.1',    
             'PORT': '5432',
         }
     }
@@ -200,3 +201,21 @@ EMAIL_HOST_USER = os.environ.get("DJ_EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("DJ_EMAIL_HOST_PASSWORD")
 EMAIL_PORT = os.environ.get("DJ_EMAIL_PORT")
 EMAIL_USE_TLS = bool(strtobool(os.environ["DJ_EMAIL_USE_TLS"]))
+
+
+# CELERY SETTINGS
+# https://docs.celeryproject.org/en/latest/userguide/configuration.html#std-setting-timezone
+CELERY_TIMEZONE = "Europe/Belgrade"
+
+# http://docs.celeryproject.org/en/latest/userguide/configuration.html#broker-settings
+# CELERY_BROKER_URL = os.environ.get("REDIS_TLS_URL", os.environ["REDIS_URL"])
+
+
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+# CELERY_ACCEPT_CONTENT = {'application/json'}
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'Europe/Belgrade'
+CELERY_RESULT_BACKEND = 'django-db'
+
+CELERY_ACCEPT_CONTENT = {"json", "pickle"}

@@ -1,0 +1,13 @@
+{
+    "customer": "miki",
+    "telephone": "12341256",
+    "email": "mihailomaric001@gmail.com",
+    "date_time": 2
+}
+creating schedule to turn on sending mail with celery
+
+
+run redis container
+
+run celery:
+celery -A config worker -l info

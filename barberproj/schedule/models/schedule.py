@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-from api.mixins import send_mail_for_schedule
+from config.tasks import send_mail_for_schedule
+# from api.mixins import send_mail_for_schedule
 from .working_day import WorkingDay
 from django.db import transaction
 
@@ -32,10 +33,15 @@ class Schedule(models.Model):
             )
             schedule_obj.save()
             barber = date_time.barber
+            print(barber.name)
             time = date_time.time_slot
             date = date_time.date
             formatted_date = date.strftime('%d-%m-%Y')
-
-            # send_mail_for_schedule(email, barber, time, formatted_date)
+            try:
+                print("PRE SLANJA MJELA")
+                send_mail_for_schedule.delay(email=email, barber=barber.name, time=time.start, date=formatted_date)
+                print("SENDED MAIL")
+            except Exception as e:
+                print("SLANJE MEJLA ERROR U SCHEDULE", e)
         except Exception as e:
-            print(e)
+            print(e, "CREATESCHEDUE ERROR")
