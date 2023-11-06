@@ -152,6 +152,7 @@ REST_FRAMEWORK = {
     ],
     # Authentication
     "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ),
@@ -163,11 +164,11 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=180),
     # "SIGNING_KEY": SECRET_KEY,
-    # "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_TYPES": ("Bearer",),
     # "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.MyTokenObtainPairSerializer",
     # 'BLACKLIST_AFTER_ROTATION': True,
     # 'REFRESH_TOKEN_LIFETIME': timedelta(days=15),
-    'ROTATE_REFRESH_TOKENS': False,
+    # 'ROTATE_REFRESH_TOKENS': False,
     # "Bearer <Token>",
 }
 
