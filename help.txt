@@ -9,6 +9,8 @@ za updejt baze na heroku-u:
     - tad je baza u produkciji pogodjena
     - tada idem samo migrate ili opciju koju zelim
 
+prod grana - automatski deploy na heroku
+
 
 [
 {
