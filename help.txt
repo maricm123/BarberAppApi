@@ -75,7 +75,7 @@ za updejt baze na heroku-u:
 
 
 {
-    "date": "2023-10-20"
+    "date": "2023-11-09"
 }
 
 

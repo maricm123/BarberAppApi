@@ -81,8 +81,23 @@ class SetVacationDaySerializer(ReqContextMixin, serializers.Serializer):
         existing_working_day = WorkingDay.objects.filter(date=data["date"], barber=self._req_context.user)
         if existing_working_day:
             raise serializers.ValidationError("Vec ima zakazanih termina za ovog frizera za ovaj datum")
-        # barber = User.objects.get(id=data["barber"])
         WorkingDay.set_vacation(data["date"], self._req_context.user)
+        return data
+
+
+class RemoveVacationDaySerializer(ReqContextMixin, serializers.Serializer):
+    date = serializers.DateField()
+
+    def validate_date(self, value):
+         if value < date.today():
+             raise serializers.ValidationError("Datum mora biti danasnji ili unapred")
+         return value
+
+    def validate(self, data):
+        try:
+            WorkingDay.remove_vacation(data["date"], self._req_context.user)
+        except Exception as e:
+            raise serializers.ValidationError("Taj datum nije setovan prethodno kao slobodan dan.")
         return data
 
 
