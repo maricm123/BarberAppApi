@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from schedule.models.time_slot import TimeSlot
 from schedule.models.working_day import WorkingDay
-from api.serializers.serializers_shedule import GetTimeSlotSerializer, ScheduleSerializer, ScheduleSerializerCreate, SetVacationDaySerializer, TimeSlotSerializer, WorkingDaySerializer, WorkingDaySerializerCreate
+from api.serializers.serializers_shedule import GetTimeSlotSerializer, RemoveVacationDaySerializer, ScheduleSerializer, ScheduleSerializerCreate, SetVacationDaySerializer, TimeSlotSerializer, WorkingDaySerializer, WorkingDaySerializerCreate
 from barberProfile.admin import User
 from schedule.models.schedule import Schedule
 from datetime import date
@@ -69,6 +69,16 @@ class SetVacationWorkingDay(APIView):
 
     def post(self, request):
         serializer = SetVacationDaySerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class RemoveVacationWorkingDay(APIView):
+    permission_classes = (IsAuthenticated, )
+
+    def post(self, request):
+        serializer = RemoveVacationDaySerializer(data=request.data, context={"request": request})
         serializer.is_valid(raise_exception=True)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)

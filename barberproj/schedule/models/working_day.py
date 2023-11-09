@@ -36,6 +36,14 @@ class WorkingDay(models.Model):
         )
         new_working_day_as_vacation.save()
 
+    @classmethod
+    def remove_vacation(cls, date, barber):
+        working_day = WorkingDay.objects.filter(date=date, is_vacation=True, barber=barber)
+        if working_day:
+            working_day.delete()
+        else:
+            raise Exception("Taj dan nije setovan kao slobodan dan")
+
     # def save(self, *args, **kwargs):
     #     if self.is_vacation:
     #         # raise ValidationError("Time slot should be None for vacation days.")
