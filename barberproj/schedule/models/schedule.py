@@ -37,6 +37,6 @@ class Schedule(models.Model):
             date = date_time.date
             formatted_date = date.strftime('%d-%m-%Y')
 
-            # send_mail_for_schedule(email, barber, time, formatted_date)
+            send_mail_for_schedule(email, barber, time, formatted_date)
         except Exception as e:
             print(e)
