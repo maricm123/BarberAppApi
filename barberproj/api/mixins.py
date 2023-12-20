@@ -3,6 +3,8 @@ from django.urls.exceptions import NoReverseMatch
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+
+from barberproj.config import settings
 """
 Accessing Request Data:
 You can use this mixin when you need to access data from the incoming HTTP request, such as the user making the request, request headers, query parameters, or other request-related information.
@@ -20,9 +22,9 @@ class ReqContextMixin:
 
 
 def send_mail_for_schedule(email, barber, time, date):
-    subject = "Šišanje zakazano"
-    message = f"Dobar dan, uspešno ste zakazali šišanje kod {barber}. Vreme sisanja: {time}, Datum sisanja: {date}"
-    from_email = "djujicmomo99@gmail.com"
+    subject = "Potvrda za zakazani termin šišanja"
+    message = f"Dobar dan, uspešno ste zakazali šišanje kod frizera: {barber}. \nVreme usluge: {time}, Datum usluge: {date}. \n\n Za otkazivanje termina molimo Vas pozovite +38162419722. \n\n Hvala na poverenju!"
+    from_email = settings.EMAIL_HOST_USER
     recipient_list = [email]
     try:
         send_mail(subject, message, from_email, recipient_list)
