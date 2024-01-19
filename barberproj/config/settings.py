@@ -161,8 +161,8 @@ REST_FRAMEWORK = {
 
 #  ----------------- SIMPLE JWT SETTINGS ---------------------------
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=180),
+    "ACCESS_TOKEN_LIFETIME": None,
+    "REFRESH_TOKEN_LIFETIME": None,
     # "SIGNING_KEY": SECRET_KEY,
     "AUTH_HEADER_TYPES": ("Bearer",),
     # "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.MyTokenObtainPairSerializer",
